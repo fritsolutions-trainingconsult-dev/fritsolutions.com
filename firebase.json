@@ -1,0 +1,4 @@
+{
+  "hosting": { "public": ".", "ignore": ["firebase.json", "firestore.rules", "README.txt", "**/.*", "**/node_modules/**"] },
+  "firestore": { "rules": "firestore.rules" }
+}

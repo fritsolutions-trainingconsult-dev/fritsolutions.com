@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin | FR IT Solutions & Training Consult</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap">
+<script src="config.js"></script><script>window.FRIT_AUTH=1</script><script src="frit-db.js"></script><script src="seed.js"></script>
+<style>
+/* LOGO COLORS: keep in sync with the main site */
+:root{--ink:#0F2742;--brand:#1B6CA8;--accent:#F2A33A;--bg:#F3F6FA;--line:#DCE3EC;--muted:#5B6878;--red:#b3261e}
+*{box-sizing:border-box}body{margin:0;font:400 .97rem/1.55 "DM Sans",system-ui,sans-serif;color:#1B2736;background:var(--bg)}
+h1,h2,h3{font-family:"DM Serif Display",Georgia,serif;font-weight:400;color:var(--ink);margin:0 0 .5em}
+button,input,select,textarea{font:inherit}[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px}
+.login .card{width:100%;max-width:400px;box-shadow:0 18px 50px rgba(15,39,66,.12)}
+label{display:grid;gap:6px;font-weight:700;font-size:.88rem;color:var(--ink);margin-bottom:14px}label small{font-weight:400;color:var(--muted)}
+input,select,textarea{padding:11px 12px;border:1px solid #b9c6d6;border-radius:6px;width:100%;background:#fff;color:#1B2736;min-height:44px}
+textarea{resize:vertical}.ck{display:flex;align-items:center;gap:10px;font-weight:500}.ck input{width:20px;min-height:20px}
+.b{padding:10px 16px;border-radius:6px;border:1px solid #b9c6d6;background:#fff;color:var(--ink);cursor:pointer;font-weight:700;min-height:42px}
+.b.p{background:var(--brand);border-color:var(--brand);color:#fff}.b.dg{color:var(--red);border-color:#e4b4b0}.b.sm{padding:6px 12px;min-height:34px;font-size:.88rem}
+.msg{color:var(--red);min-height:1.4em;font-weight:500}
+#app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.side{background:var(--ink);color:#cfdcec;padding:20px 14px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh}
+.brand{font:400 1.3rem "DM Serif Display",serif;color:#fff;padding:4px 10px 16px}.brand span{color:var(--accent)}
+.side nav{display:flex;flex-direction:column;gap:4px}
+.side nav button,.side .sf button,.side .sf a{background:none;border:0;color:#cfdcec;text-align:left;padding:11px 12px;border-radius:6px;cursor:pointer;font-weight:500;text-decoration:none;display:block;width:100%}
+.side nav button:hover,.side .sf a:hover,.side .sf button:hover{background:rgba(255,255,255,.1)}
+.side nav button.on{background:var(--accent);color:#1a1100;font-weight:700}.sf{margin-top:auto}
+.main{padding:clamp(18px,3vw,36px);min-width:0}
+.main h1{font-size:2rem}
+.stats{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:24px}
+.stat b{display:block;font:400 2.2rem/1.1 "DM Serif Display",serif;color:var(--brand)}.stat span{color:var(--muted)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}.bar input,.bar select{width:auto;min-width:160px;flex:1;max-width:260px}.sp{flex:1}
+.tw{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:560px}th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.82rem;color:var(--muted);background:#fafcfe;white-space:nowrap}tr:last-child td{border-bottom:0}
+tbody tr.row{cursor:pointer}tbody tr.row:hover{background:#f6f9fd}
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.8rem;font-weight:700;background:#e8eef6;color:var(--ink)}
+.s-new{background:#fde9c8;color:#6b4300}.s-contacted{background:#dcecfb;color:#0b4a7a}.s-enrolled{background:#d9f2e0;color:#14612b}.s-declined{background:#f3dcda;color:#8a1f17}
+.on-b{background:#d9f2e0;color:#14612b}.off-b{background:#eee;color:#555}
+.two{display:grid;gap:20px;grid-template-columns:300px 1fr;align-items:start}
+@media(max-width:900px){.two{grid-template-columns:1fr}}
+.cl{list-style:none;margin:0;padding:0}.cl li{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}.cl li:last-child{border:0}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.chip{border:1px solid #b9c6d6;background:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:500}.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+@media(max-width:760px){
+#app{grid-template-columns:1fr}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:10px}
+.brand{padding:4px 10px}.side nav{flex-direction:row;flex-wrap:wrap;order:3;width:100%}.sf{margin:0 0 0 auto;display:flex}.side .sf button,.side .sf a{padding:8px 10px;width:auto}}
+dialog{border:0;border-radius:12px;padding:0;width:min(680px,94vw);max-height:92vh;box-shadow:0 30px 80px rgba(0,0,0,.35)}dialog::backdrop{background:rgba(5,12,22,.6)}
+#df{padding:24px;overflow:auto;max-height:92vh}.act{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}.act .dg{margin-left:auto}
+.info{background:var(--bg);border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:.9rem;color:var(--muted)}
+.pv{margin:-6px 0 14px}.pv summary{cursor:pointer;font-weight:700;color:var(--brand)}
+.prose{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin-top:8px;line-height:1.7}.prose img{max-width:100%}.prose blockquote{border-left:4px solid var(--accent);margin:1em 0;padding-left:14px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:8px;opacity:0;pointer-events:none;transition:.25s;z-index:100;max-width:90vw}
+#toast.show{opacity:1;transform:translateX(-50%)}#toast.bad{background:var(--red)}
+.mut{color:var(--muted)}
+.imgbox{margin:-6px 0 16px}.imgbox img{max-width:220px;max-height:140px;border-radius:8px;display:block;margin-bottom:8px;border:1px solid var(--line)}.imgbox .note{font-size:.85rem;color:var(--muted);margin-bottom:8px}.imgbox .act{margin-top:0}
+.two>*,.stats>*,.bar>*{min-width:0}
+input,select,textarea{font-size:16px}
+.s-read{background:#e8eef6;color:var(--ink)}.s-replied{background:#d9f2e0;color:#14612b}.s-archived{background:#eee;color:#555}
+tr.unread td{font-weight:700}
+.nb{display:inline-block;min-width:20px;padding:0 6px;margin-left:8px;border-radius:999px;background:var(--red);color:#fff;font-size:.78rem;font-weight:700;text-align:center;line-height:1.6}
+</style>
+</head>
+<body>
+<div id="login" class="login"><div class="card">
+<h1>Admin sign in</h1><p class="mut">FR IT Solutions &amp; Training Consult</p>
+<form id="lf"><label>Email<input id="le" type="email" required autocomplete="username"></label>
+<label>Password<input id="lp" type="password" required autocomplete="current-password"></label>
+<p class="msg" id="lmsg" role="alert"></p><button class="b p" type="submit">Sign in</button> <a href="index.html" class="mut">Back to site</a></form>
+</div></div>
+
+<div id="app" hidden>
+<aside class="side"><div class="brand">FR <span>IT</span> Admin</div>
+<nav aria-label="Dashboard"><button data-t="home" class="on">Overview</button><button data-t="courses">Courses</button><button data-t="regs">Registrations</button><button data-t="messages">Messages<span class="nb" id="mbadge" hidden></span></button><button data-t="projects">Projects</button><button data-t="blog">Blog</button></nav>
+<div class="sf"><a href="index.html" target="_blank" rel="noopener">View site</a><button id="refresh" type="button">Refresh</button><button id="out" type="button">Sign out</button></div></aside>
+<main class="main">
+<section id="t-home"><h1>Overview</h1><div class="card" id="homewarn" hidden style="margin-bottom:16px;border-color:#e4b4b0"><b>Some data cannot load yet</b><p class="mut" id="homewarntxt"></p></div><div class="stats" id="stats"></div><div class="card"><h3>Registrations by course</h3><div id="bycourse"></div></div></section>
+
+<section id="t-courses" hidden><h1>Courses</h1><div class="card" id="seedbox" hidden style="margin-bottom:20px"><b>Start with your current courses</b><p class="mut">Your database is empty. Load your 4 categories and 8 courses, then edit them however you like.</p><button class="b p" id="seed" type="button">Load starter courses</button></div><div class="two">
+<div class="card"><h3>Categories</h3><ul class="cl" id="catlist"></ul><button class="b p sm" id="addcat" type="button">Add category</button></div>
+<div><div class="bar"><select id="cf" aria-label="Filter by category"></select><span class="sp"></span><button class="b p" id="addcourse" type="button">Add course</button></div>
+<div class="tw"><table><thead><tr><th>Course</th><th>Category</th><th>Status</th><th></th></tr></thead><tbody id="ctb"></tbody></table></div></div></div></section>
+
+<section id="t-regs" hidden><h1>Registrations</h1><div class="chips" id="rchips"></div>
+<div class="bar"><input id="rq" type="search" placeholder="Search name, email, phone" aria-label="Search"><select id="rs" aria-label="Filter by status"><option value="">All statuses</option><option value="new">New</option><option value="contacted">Contacted</option><option value="enrolled">Enrolled</option><option value="declined">Declined</option></select><span class="sp"></span><button class="b" id="csv" type="button">Export CSV</button><button class="b p" id="addreg" type="button">Add applicant</button></div>
+<div class="tw"><table><thead><tr><th>Received</th><th>Applicant</th><th>Course</th><th>Contact</th><th>Status</th></tr></thead><tbody id="rtb"></tbody></table></div></section>
+
+<section id="t-messages" hidden><h1>Messages and enquiries</h1><p class="mut" id="mcount" role="status"></p>
+<div class="card" id="msgwarn" hidden style="margin-bottom:16px;border-color:#e4b4b0"><b>One more step to use this tab</b><p class="mut">Open Firebase &gt; Firestore Database &gt; Rules, paste the latest rules from the firestore.rules file, and click Publish. Then refresh this page.</p></div>
+<div class="bar"><input id="mq" type="search" placeholder="Search name, email, message" aria-label="Search messages"><select id="ms" aria-label="Filter by status"><option value="">All statuses</option><option value="new">New</option><option value="read">Read</option><option value="replied">Replied</option><option value="archived">Archived</option></select><span class="sp"></span><button class="b p" id="addmsg" type="button">Log an enquiry</button></div>
+<div class="tw"><table><thead><tr><th>Received</th><th>From</th><th>Message</th><th>Status</th></tr></thead><tbody id="mtb"></tbody></table></div></section>
+
+<section id="t-projects" hidden><h1>Projects and programs</h1>
+<div class="card" id="prjwarn" hidden style="margin-bottom:16px;border-color:#e4b4b0"><b>One more step to use this tab</b><p class="mut">Open Firebase &gt; Firestore Database &gt; Rules, paste the latest rules from the firestore.rules file, and click Publish. Then refresh this page.</p></div>
+<div class="card" id="pseedbox" hidden style="margin-bottom:16px"><b>Start with your current projects</b><p class="mut">Load the 4 projects now on your website, then edit them or add new ones.</p><button class="b p" id="pseed" type="button">Load my current projects</button></div>
+<div class="bar"><span class="sp"></span><button class="b p" id="addprj" type="button">Add project or program</button></div>
+<div class="tw"><table><thead><tr><th>Title</th><th>Type</th><th>Status</th><th>On website</th><th></th></tr></thead><tbody id="jtb"></tbody></table></div></section>
+
+<section id="t-blog" hidden><h1>Blog: Digital Edge</h1><div class="bar"><span class="sp"></span><button class="b p" id="addpost" type="button">New article</button></div>
+<div class="tw"><table><thead><tr><th>Title</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody id="ptb"></tbody></table></div></section>
+</main></div>
+
+<dialog id="dlg" aria-label="Edit item"><form id="df"></form></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+var $=function(s,c){return (c||document).querySelector(s)},$$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
+function slug(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function fdt(x){return x?new Date(x).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'}):''}
+function fd(x){return x?new Date(x).toLocaleDateString('en-US',{dateStyle:'medium'}):''}
+function toast(m,bad){var t=$('#toast');t.textContent=m;t.className='show'+(bad?' bad':'');clearTimeout(toast.h);toast.h=setTimeout(function(){t.className=''},3800)}
+var db,S={cats:[],courses:[],regs:[],posts:[],projects:[],messages:[]},F={q:'',course:'',status:'',cat:''};
+var ST={new:'New',contacted:'Contacted',enrolled:'Enrolled',declined:'Declined'};
+
+/* auth */
+FRIT_DB.ready.then(function(c){
+  if(!c){$('#lmsg').textContent='Not connected. Add your Firebase details to config.js.';return}
+  db=c;db.auth.getSession().then(function(r){if(r.data&&r.data.session)enter()});
+});
+$('#lf').addEventListener('submit',function(e){e.preventDefault();if(!db){return}
+  db.auth.signInWithPassword({email:$('#le').value.trim(),password:$('#lp').value}).then(function(r){
+    if(r.error){$('#lmsg').textContent=r.error.message;return}enter()})});
+function enter(){db.rpc('is_admin').then(function(r){
+  if(r.error||r.data!==true){$('#lmsg').textContent='This account does not have admin access.';db.auth.signOut();return}
+  $('#login').hidden=true;$('#app').hidden=false;loadAll()})}
+$('#out').onclick=function(){db.auth.signOut().then(function(){location.reload()})};
+$$('.side nav button').forEach(function(b){b.onclick=function(){$$('.side nav button').forEach(function(x){x.classList.toggle('on',x===b)});['home','courses','regs','messages','projects','blog'].forEach(function(t){$('#t-'+t).hidden=t!==b.dataset.t})}});
+
+/* data */
+function loadAll(){return Promise.all([
+  db.from('categories').select('*').order('sort').order('name'),
+  db.from('courses').select('*').order('sort').order('name'),
+  db.from('registrations').select('*').order('created_at',{ascending:false}),
+  db.from('posts').select('*').order('created_at',{ascending:false}),
+  db.from('projects').select('*').order('sort').order('created_at',{ascending:false}),
+  db.from('messages').select('*').order('created_at',{ascending:false})
+]).then(function(r){var e=r.slice(0,4).filter(function(x){return x.error})[0];if(e){toast(e.error.message,1);return}
+  S.cats=r[0].data;S.courses=r[1].data;S.regs=r[2].data;S.posts=r[3].data;S.projErr=!!r[4].error;S.projects=r[4].error?[]:r[4].data;S.msgErr=!!r[5].error;S.errTxt=(r[4].error&&r[4].error.message)||(r[5].error&&r[5].error.message)||'';S.messages=r[5].error?[]:r[5].data;renderAll();startLive()})}
+function op(p,msg){return p.then(function(r){
+  if(r.error){toast(/foreign key/.test(r.error.message)?'This category still has courses. Move or delete them first.':r.error.message,1);return false}
+  toast(msg);return loadAll().then(function(){return true})})}
+function catName(id){var c=S.cats.filter(function(x){return x.id===id})[0];return c?c.name:'Uncategorized'}
+
+/* tidy pasted article text: one blank line between paragraphs, bullets kept together */
+function tidy(t){var out=[],prev='';
+  t.replace(/\r/g,'').replace(/\u00a0/g,' ').split('\n').forEach(function(l){
+    l=l.replace(/^\s*[\u2022\u25CF\u25AA\u25E6\u2023]\s+/,'- ').replace(/[ \t]+$/,'');
+    if(!l.trim()){if(out.length&&out[out.length-1]!=='')out.push('');prev='';return}
+    if(out.length&&out[out.length-1]!==''&&!(/^- /.test(l)&&/^- /.test(prev)))out.push('');
+    out.push(l);prev=l});
+  return out.join('\n').replace(/\n{3,}/g,'\n\n').trim()}
+/* shrink a chosen picture so it can be saved with the item (no outside hosting needed) */
+function resizeImage(file,max){return new Promise(function(res,rej){var rd=new FileReader();rd.onerror=rej;rd.onload=function(){var im=new Image();im.onerror=rej;im.onload=function(){
+  var s=Math.min(1,max/im.naturalWidth),w=Math.max(1,Math.round(im.naturalWidth*s)),h=Math.max(1,Math.round(im.naturalHeight*s)),q=.82,out='';
+  for(var n=0;n<8;n++){var c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);out=c.toDataURL('image/jpeg',q);if(out.length<380000)break;if(q>.6)q-=.1;else{w=Math.round(w*.85);h=Math.round(h*.85)}}
+  if(out.length>600000)return rej(new Error('too large'));res(out)};im.src=rd.result};rd.readAsDataURL(file)})}
+/* generic form dialog */
+var dlg=$('#dlg'),df=$('#df');
+function openForm(o){var v=o.values||{};
+  df.innerHTML='<h2>'+esc(o.title)+'</h2>'+(o.info?'<div class="info">'+o.info+'</div>':'')+o.fields.map(function(f){
+    var val=v[f.k]==null?'':v[f.k],id='f_'+f.k,h;if(f.img&&String(val).indexOf('data:')===0)val='';
+    if(f.t==='checkbox')return '<label class="ck"><input type="checkbox" id="'+id+'"'+(val?' checked':'')+'> '+esc(f.l)+'</label>';
+    var inp;
+    if(f.t==='textarea'||f.t==='md')inp='<textarea id="'+id+'" rows="'+(f.t==='md'?14:(f.rows||3))+'"'+(f.r?' required':'')+'>'+esc(val)+'</textarea>';
+    else if(f.t==='select')inp='<select id="'+id+'"'+(f.r?' required':'')+'>'+f.o.map(function(x){return '<option value="'+esc(x[0])+'"'+(String(x[0])===String(val)?' selected':'')+'>'+esc(x[1])+'</option>'}).join('')+'</select>';
+    else inp='<input id="'+id+'" type="'+(f.t||'text')+'" value="'+esc(val)+'"'+(f.r?' required':'')+'>';
+    h='<label>'+esc(f.l)+inp+(f.h?'<small>'+esc(f.h)+'</small>':'')+'</label>';
+    if(f.img)h+='<div class="imgbox"><img id="pi_'+f.k+'" alt="" hidden><div class="note" id="pn_'+f.k+'" role="status"></div><div class="act"><button type="button" class="b sm" id="fb_'+f.k+'">Upload a picture</button><button type="button" class="b sm" id="fr_'+f.k+'" hidden>Remove picture</button><input type="file" id="fu_'+f.k+'" accept="image/*" hidden></div></div>';
+    if(f.t==='md')h+='<details class="pv"><summary>Preview</summary><div class="prose" id="pv_'+f.k+'"></div></details>';
+    return h}).join('')+'<div class="act"><button type="submit" class="b p">Save</button><button type="button" class="b" id="dc">Cancel</button>'+(o.onDelete?'<button type="button" class="b dg" id="dd">Delete</button>':'')+'</div>';
+  o.fields.forEach(function(f){if(f.t!=='md')return;var ta=$('#f_'+f.k),pv=$('#pv_'+f.k);var up=function(){pv.innerHTML=FRIT_MD(ta.value)};
+    ta.addEventListener('paste',function(e){var cd=e.clipboardData||window.clipboardData,t=cd&&cd.getData('text');if(!t)return;e.preventDefault();
+      var n=tidy(t),s=ta.selectionStart,en=ta.selectionEnd;ta.value=ta.value.slice(0,s)+n+ta.value.slice(en);ta.selectionStart=ta.selectionEnd=s+n.length;ta.dispatchEvent(new Event('input'))});ta.addEventListener('input',up);$('details.pv').addEventListener('toggle',up)});
+  var IMGST={};
+  o.fields.forEach(function(f){if(!f.img)return;var k=f.k,inp=$('#f_'+k),pi=$('#pi_'+k),pn=$('#pn_'+k),fr=$('#fr_'+k),fu=$('#fu_'+k),cur=String(v[k]||''),tm,st=IMGST[k]={data:cur.indexOf('data:')===0?cur:''};
+    function show(src){if(!src){pi.hidden=true;fr.hidden=true;pn.textContent='';return}fr.hidden=false;pi.hidden=false;pi.src=src}
+    pi.onload=function(){pn.textContent=st.data?'Uploaded picture. It is saved with this item and will always show.':'Picture found. It will show on the website.'};
+    pi.onerror=function(){pi.hidden=true;pn.textContent='This link does not open as a picture, so visitors would see an empty box. Use a direct picture link, or click Upload a picture.'};
+    if(st.data){inp.placeholder='Using the uploaded picture';show(st.data)}else if(cur)show(cur);
+    inp.addEventListener('input',function(){st.data='';clearTimeout(tm);tm=setTimeout(function(){show(inp.value.trim())},500)});
+    $('#fb_'+k).onclick=function(){fu.click()};
+    fu.onchange=function(){var file=fu.files&&fu.files[0];if(!file)return;pn.textContent='Preparing picture...';
+      resizeImage(file,f.max||1000).then(function(d){st.data=d;inp.value='';inp.placeholder='Using the uploaded picture';show(d)},function(){pn.textContent='That file could not be used. Please choose a JPG or PNG picture.'});fu.value=''};
+    fr.onclick=function(){st.data='';inp.value='';inp.placeholder='';show('')}});
+  df.onsubmit=function(e){e.preventDefault();var out={};
+    o.fields.forEach(function(f){var el=$('#f_'+f.k);out[f.k]=f.img?(IMGST[f.k].data||el.value.trim()):f.t==='checkbox'?el.checked:(f.t==='number'?(el.value===''?0:+el.value):el.value.trim?el.value.trim():el.value)});
+    Promise.resolve(o.onSave(out)).then(function(ok){if(ok!==false)dlg.close()})};
+  $('#dc').onclick=function(){dlg.close()};
+  if(o.onDelete)$('#dd').onclick=function(){if(confirm('Delete this item? This cannot be undone.'))Promise.resolve(o.onDelete()).then(function(ok){if(ok!==false)dlg.close()})};
+  dlg.showModal()}
+
+/* render */
+function renderAll(){renderHome();renderCourses();renderRegs();renderPosts();renderProjects();renderMessages()}
+function newMsgs(){return S.messages.filter(function(m){return m.status==='new'}).length}
+function homeWarn(){var w=$('#homewarn'),p=[];if(S.msgErr)p.push('Messages');if(S.projErr)p.push('Projects');w.hidden=!p.length;
+  if(p.length)$('#homewarntxt').textContent=p.join(' and ')+' cannot load yet, so their counts show 0. In Firebase, open Firestore Database > Rules, paste the latest rules from the firestore.rules file, and click Publish. Then click Refresh.'+(S.errTxt?' (Firebase said: '+S.errTxt+')':'')}
+function updTitle(){var n=newMsgs()+S.regs.filter(function(r){return r.status==='new'}).length;document.title=(n?'('+n+') ':'')+'Admin | FR IT Solutions & Training Consult'}
+function renderHome(){homeWarn();updTitle();
+  var nw=S.regs.filter(function(r){return r.status==='new'}).length,pub=S.posts.filter(function(p){return p.published}).length;
+  $('#stats').innerHTML=[[nw,'New registrations'],[S.regs.length,'Total registrations'],[newMsgs(),'New messages'],[S.messages.length,'Total messages'],[S.courses.length,'Courses'],[S.projects.length,'Projects & programs'],[pub+' / '+S.posts.length,'Articles published']].map(function(x){return '<div class="card stat"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>'}).join('');
+  var m={};S.regs.forEach(function(r){m[r.course_name]=(m[r.course_name]||0)+1});
+  var k=Object.keys(m).sort(function(a,b){return m[b]-m[a]});
+  $('#bycourse').innerHTML=k.length?'<ul class="cl">'+k.map(function(n){return '<li><span>'+esc(n)+'</span><span class="badge">'+m[n]+'</span></li>'}).join('')+'</ul>':'<p class="mut">No registrations yet.</p>'}
+function renderCourses(){
+  $('#seedbox').hidden=!(window.FRIT_SEED&&!S.cats.length&&!S.courses.length);
+  $('#catlist').innerHTML=S.cats.map(function(c){var n=S.courses.filter(function(x){return x.category_id===c.id}).length;return '<li><span>'+esc(c.name)+' <span class="mut">('+n+')</span></span><button class="b sm" data-ec="'+c.id+'" type="button">Edit</button></li>'}).join('')||'<li class="mut">No categories yet.</li>';
+  var cf=$('#cf');cf.innerHTML='<option value="">All categories</option>'+S.cats.map(function(c){return '<option value="'+c.id+'"'+(F.cat===c.id?' selected':'')+'>'+esc(c.name)+'</option>'}).join('');
+  var rows=S.courses.filter(function(c){return !F.cat||c.category_id===F.cat});
+  $('#ctb').innerHTML=rows.map(function(c){return '<tr><td><b>'+esc(c.name)+'</b><div class="mut">'+esc((c.description||'').slice(0,90))+'</div></td><td>'+esc(catName(c.category_id))+'</td><td><span class="badge '+(c.active?'on-b':'off-b')+'">'+(c.active?'Visible':'Hidden')+'</span></td><td><button class="b sm" data-e="'+c.id+'" type="button">Edit</button></td></tr>'}).join('')||'<tr><td colspan="4" class="mut">No courses here yet.</td></tr>'}
+function renderRegs(){
+  var m={};S.regs.forEach(function(r){m[r.course_name]=(m[r.course_name]||0)+1});
+  $('#rchips').innerHTML='<button class="chip'+(F.course?'':' on')+'" data-c="" type="button">All ('+S.regs.length+')</button>'+Object.keys(m).map(function(n){return '<button class="chip'+(F.course===n?' on':'')+'" data-c="'+esc(n)+'" type="button">'+esc(n)+' ('+m[n]+')</button>'}).join('');
+  $('#rtb').innerHTML=regRows().map(function(r){return '<tr class="row" data-r="'+r.id+'" tabindex="0"><td>'+esc(fdt(r.created_at))+'</td><td><b>'+esc(r.first_name+' '+r.last_name)+'</b></td><td>'+esc(r.course_name)+'</td><td>'+esc(r.email||'')+'<div class="mut">'+esc(r.phone||'')+'</div></td><td><span class="badge s-'+esc(r.status)+'">'+esc(ST[r.status]||r.status)+'</span></td></tr>'}).join('')||'<tr><td colspan="5" class="mut">No registrations match.</td></tr>'}
+function regRows(){var q=F.q.toLowerCase();return S.regs.filter(function(r){return (!F.course||r.course_name===F.course)&&(!F.status||r.status===F.status)&&(!q||(r.first_name+' '+r.last_name+' '+(r.email||'')+' '+(r.phone||'')).toLowerCase().indexOf(q)>-1)})}
+function renderPosts(){$('#ptb').innerHTML=S.posts.map(function(p){return '<tr><td><b>'+esc(p.title)+'</b><div class="mut">/'+esc(p.slug)+'</div></td><td><span class="badge '+(p.published?'on-b':'off-b')+'">'+(p.published?'Published':'Draft')+'</span></td><td>'+esc(fd(p.published_at||p.created_at))+'</td><td><button class="b sm" data-p="'+p.id+'" type="button">Edit</button></td></tr>'}).join('')||'<tr><td colspan="4" class="mut">No articles yet. Click New article to write your first Digital Edge piece.</td></tr>'}
+
+/* categories */
+function catForm(c){openForm({title:c?'Edit category':'Add category',values:c||{sort:S.cats.length+1},fields:[{k:'name',l:'Category name',r:1},{k:'slug',l:'Short code',h:'Letters and dashes only. Leave blank to create it from the name.'},{k:'sort',l:'Display order',t:'number'}],
+  onSave:function(v){var o={name:v.name,slug:slug(v.slug||v.name),sort:v.sort};return op(c?db.from('categories').update(o).eq('id',c.id):db.from('categories').insert([o]),'Category saved')},
+  onDelete:c?function(){if(S.courses.some(function(x){return x.category_id===c.id})){toast('This category still has courses. Move or delete them first.',1);return false}return op(db.from('categories').delete().eq('id',c.id),'Category deleted')}:null})}
+$('#addcat').onclick=function(){catForm()};
+$('#catlist').onclick=function(e){var b=e.target.closest('[data-ec]');if(b)catForm(S.cats.filter(function(c){return c.id===b.dataset.ec})[0])};
+$('#cf').onchange=function(){F.cat=this.value;renderCourses()};
+
+/* courses */
+function courseForm(c){openForm({title:c?'Edit course':'Add course',values:c||{active:true,sort:S.courses.length+1,category_id:F.cat||(S.cats[0]&&S.cats[0].id)},
+  fields:[{k:'name',l:'Course name',r:1},{k:'category_id',l:'Category',t:'select',r:1,o:S.cats.map(function(x){return [x.id,x.name]})},{k:'description',l:'Short description',t:'textarea'},{k:'image_url',l:'Picture link',t:'url',img:1,max:800,h:'Optional. Paste a direct picture link, or use Upload a picture below.'},{k:'sort',l:'Display order',t:'number'},{k:'active',l:'Show this course on the website',t:'checkbox'}],
+  onSave:function(v){if(!v.category_id){toast('Add a category first.',1);return false}var o={name:v.name,category_id:v.category_id,description:v.description,image_url:v.image_url||null,sort:v.sort,active:v.active};return op(c?db.from('courses').update(o).eq('id',c.id):db.from('courses').insert([o]),'Course saved')},
+  onDelete:c?function(){return op(db.from('courses').delete().eq('id',c.id),'Course deleted')}:null})}
+$('#addcourse').onclick=function(){if(!S.cats.length){toast('Add a category first.',1);return}courseForm()};
+$('#ctb').onclick=function(e){var b=e.target.closest('[data-e]');if(b)courseForm(S.courses.filter(function(c){return c.id===b.dataset.e})[0])};
+
+/* registrations */
+function regForm(r){var names=S.courses.map(function(c){return c.name});if(r&&names.indexOf(r.course_name)<0)names.push(r.course_name);
+  openForm({title:r?'Applicant details':'Add applicant',info:r?'Received '+esc(fdt(r.created_at))+(r.source?' &nbsp;|&nbsp; Source: '+esc(r.source):''):'',values:r||{status:'new'},
+  fields:[{k:'first_name',l:'First name',r:1},{k:'last_name',l:'Last name',r:1},{k:'email',l:'Email',t:'email'},{k:'phone',l:'Phone',t:'tel'},{k:'dob',l:'Date of birth',t:'date'},{k:'course_name',l:'Course',t:'select',r:1,o:names.map(function(n){return [n,n]})},{k:'status',l:'Status',t:'select',o:Object.keys(ST).map(function(k){return [k,ST[k]]})},{k:'notes',l:'Private notes',t:'textarea'}],
+  onSave:function(v){var c=S.courses.filter(function(x){return x.name===v.course_name})[0];var o={first_name:v.first_name,last_name:v.last_name,email:v.email||null,phone:v.phone||null,dob:v.dob||null,course_name:v.course_name,course_id:c?c.id:(r?r.course_id:null),status:v.status,notes:v.notes||null};
+    if(!r)o.source='manual';return op(r?db.from('registrations').update(o).eq('id',r.id):db.from('registrations').insert([o]),'Applicant saved')},
+  onDelete:r?function(){return op(db.from('registrations').delete().eq('id',r.id),'Applicant deleted')}:null})}
+$('#addreg').onclick=function(){if(!S.courses.length){toast('Add a course first.',1);return}regForm()};
+function openReg(t){var tr=t.closest('[data-r]');if(tr)regForm(S.regs.filter(function(x){return x.id===tr.dataset.r})[0])}
+$('#rtb').onclick=function(e){openReg(e.target)};$('#rtb').onkeydown=function(e){if(e.key==='Enter')openReg(e.target)};
+$('#rchips').onclick=function(e){var b=e.target.closest('[data-c]');if(b){F.course=b.dataset.c;renderRegs()}};
+$('#rq').oninput=function(){F.q=this.value;renderRegs()};$('#rs').onchange=function(){F.status=this.value;renderRegs()};
+$('#csv').onclick=function(){var rows=regRows();if(!rows.length){toast('Nothing to export.',1);return}
+  var h=['Received','First name','Last name','Email','Phone','Date of birth','Course','Status','Notes'];
+  function cell(x){x=String(x==null?'':x);if(/^[=+\-@\t\r]/.test(x))x="'"+x;return '"'+x.replace(/"/g,'""')+'"'}
+  var lines=[h.map(cell).join(',')].concat(rows.map(function(r){return [r.created_at,r.first_name,r.last_name,r.email,r.phone,r.dob,r.course_name,r.status,r.notes].map(cell).join(',')}));
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([lines.join('\r\n')],{type:'text/csv'}));a.download='registrations.csv';document.body.appendChild(a);a.click();a.remove()};
+
+/* messages and enquiries */
+var MST={new:'New',read:'Read',replied:'Replied',archived:'Archived'},MF={q:'',s:''};
+function renderMessages(){
+  var n=newMsgs(),bd=$('#mbadge');bd.textContent=S.msgErr?'!':(n||'');bd.hidden=!n&&!S.msgErr;$('#msgwarn').hidden=!S.msgErr;
+  $('#mcount').textContent=S.msgErr?'':S.messages.length+(S.messages.length===1?' message':' messages')+' in total, '+n+' new.';
+  var q=MF.q.toLowerCase(),rows=S.messages.filter(function(m){return (!MF.s||m.status===MF.s)&&(!q||((m.first_name||'')+' '+(m.last_name||'')+' '+(m.email||'')+' '+(m.message||'')).toLowerCase().indexOf(q)>-1)});
+  $('#mtb').innerHTML=rows.map(function(m){var tx=m.message||'';return '<tr class="row'+(m.status==='new'?' unread':'')+'" data-m="'+m.id+'" tabindex="0"><td>'+esc(fdt(m.created_at))+'</td><td><b>'+esc(m.first_name+' '+m.last_name)+'</b><div class="mut">'+esc(m.email||'')+'</div></td><td>'+esc(tx.slice(0,90))+(tx.length>90?'...':'')+'</td><td><span class="badge s-'+esc(m.status)+'">'+esc(MST[m.status]||m.status)+'</span></td></tr>'}).join('')||'<tr><td colspan="4" class="mut">'+(S.messages.length?'No messages match.':'No messages yet. Enquiries sent from your Contact form will appear here.')+'</td></tr>'}
+function msgForm(m){
+  var info=m?'Received '+esc(fdt(m.created_at))+(m.source==='manual'?' (logged by hand)':'')+(m.email?' &nbsp;|&nbsp; <a href="mailto:'+esc(m.email)+'?subject='+encodeURIComponent('Re: your enquiry to FR IT Solutions & Training Consult')+'">Reply by email</a>':''):'';
+  openForm({title:m?'Message from '+m.first_name+' '+m.last_name:'Log an enquiry',info:info,values:m||{status:'read'},
+  fields:[{k:'first_name',l:'First name',r:1},{k:'last_name',l:'Last name',r:1},{k:'email',l:'Email',t:'email'},{k:'message',l:'Message',t:'textarea',r:1,rows:7},{k:'status',l:'Status',t:'select',o:Object.keys(MST).map(function(k){return [k,MST[k]]})},{k:'notes',l:'Private notes',t:'textarea'}],
+  onSave:function(v){var o={first_name:v.first_name,last_name:v.last_name,email:v.email||null,message:v.message,status:v.status,notes:v.notes||null};if(!m)o.source='manual';
+    return op(m?db.from('messages').update(o).eq('id',m.id):db.from('messages').insert([o]),'Saved')},
+  onDelete:m?function(){return op(db.from('messages').delete().eq('id',m.id),'Message deleted')}:null})}
+function openMsg(t){var tr=t.closest('[data-m]');if(!tr)return;var m=S.messages.filter(function(x){return x.id===tr.dataset.m})[0];if(!m)return;
+  if(m.status==='new'){m.status='read';db.from('messages').update({status:'read'}).eq('id',m.id).then(function(r){if(r.error)m.status='new';renderMessages();renderHome()})}
+  msgForm(m)}
+$('#mtb').onclick=function(e){openMsg(e.target)};$('#mtb').onkeydown=function(e){if(e.key==='Enter')openMsg(e.target)};
+$('#mq').oninput=function(){MF.q=this.value;renderMessages()};$('#ms').onchange=function(){MF.s=this.value;renderMessages()};
+$('#addmsg').onclick=function(){msgForm()};
+
+/* projects and programs */
+var KIND={project:'Project',program:'Program'},PST={planned:'Planned',ongoing:'Ongoing',completed:'Completed'};
+function renderProjects(){
+  $('#prjwarn').hidden=!S.projErr;$('#pseedbox').hidden=!(window.FRIT_SEED&&window.FRIT_SEED.projects&&!S.projects.length&&!S.projErr);
+  $('#jtb').innerHTML=S.projects.map(function(p){return '<tr><td><b>'+esc(p.title)+'</b><div class="mut">'+esc([p.partner,p.period,p.location].filter(Boolean).join(' | '))+'</div></td><td>'+esc(KIND[p.kind]||'Project')+'</td><td>'+(PST[p.status]?'<span class="badge">'+PST[p.status]+'</span>':'<span class="mut">None</span>')+'</td><td><span class="badge '+(p.active?'on-b':'off-b')+'">'+(p.active?'Visible':'Hidden')+'</span></td><td><button class="b sm" data-j="'+p.id+'" type="button">Edit</button></td></tr>'}).join('')||'<tr><td colspan="5" class="mut">No projects yet. Click Add project or program.</td></tr>'}
+function projForm(p){openForm({title:p?'Edit project or program':'Add project or program',values:p||{kind:'project',status:'',active:true,sort:S.projects.length+1},
+  fields:[{k:'title',l:'Title',r:1},{k:'kind',l:'Type',t:'select',o:[['project','Project'],['program','Program']]},
+  {k:'status',l:'Status',t:'select',o:[['','No status shown'],['planned','Planned'],['ongoing','Ongoing'],['completed','Completed']]},
+  {k:'period',l:'When',h:'Optional. For example: March 2026, or 2025 to 2026.'},{k:'partner',l:'Partner or funder',h:'Optional. For example: SmartHub Foundation Initiative.'},{k:'location',l:'Location',h:'Optional. For example: Ho, Volta Region.'},
+  {k:'description',l:'Description',t:'textarea',r:1},{k:'image_url',l:'Photo link',t:'url',img:1,max:1000,h:'Optional. Paste a direct picture link, or use Upload a picture below.'},{k:'image_url_2',l:'Second photo link',t:'url',img:1,max:1000,h:'Optional.'},
+  {k:'sort',l:'Display order',t:'number',h:'Smaller numbers appear first.'},{k:'active',l:'Show on the website',t:'checkbox'}],
+  onSave:function(v){var o={title:v.title,kind:v.kind,status:v.status,period:v.period||null,partner:v.partner||null,location:v.location||null,description:v.description,image_url:v.image_url||null,image_url_2:v.image_url_2||null,sort:v.sort,active:v.active};
+    return op(p?db.from('projects').update(o).eq('id',p.id):db.from('projects').insert([o]),'Saved')},
+  onDelete:p?function(){return op(db.from('projects').delete().eq('id',p.id),'Deleted')}:null})}
+$('#addprj').onclick=function(){projForm()};
+$('#jtb').onclick=function(e){var b=e.target.closest('[data-j]');if(b)projForm(S.projects.filter(function(x){return x.id===b.dataset.j})[0])};
+$('#pseed').onclick=function(){var SD=window.FRIT_SEED;if(!SD||!SD.projects)return;this.disabled=true;
+  db.from('projects').insert(SD.projects.map(function(p){return {title:p.title,kind:p.kind,status:p.status,partner:p.partner||null,description:p.description,image_url:p.image_url||null,image_url_2:p.image_url_2||null,sort:p.sort,active:true}})).then(function(r){
+    if(r.error){toast(r.error.message,1);return}toast('Projects loaded.');loadAll()})};
+
+/* blog */
+function postForm(p){openForm({title:p?'Edit article':'New article',values:p?{title:p.title,slug:p.slug,excerpt:p.excerpt,cover_url:p.cover_url,body:p.body,published:p.published,published_at:(p.published_at||'').slice(0,10)}:{published:false},
+  fields:[{k:'title',l:'Title',r:1},{k:'slug',l:'Web address ending',h:'Leave blank to create it from the title.'},{k:'excerpt',l:'Short summary',t:'textarea',h:'Shown on the article list.'},{k:'cover_url',l:'Cover picture link',t:'url',img:1,max:1200,h:'Optional. Uploading a picture is the most reliable option, because links from Facebook, LinkedIn or Google Drive often stop working.'},
+  {k:'body',l:'Article text',t:'md',r:1,h:'Paste your article text here. Each paragraph is kept as its own paragraph. Optional formatting: ## for a heading, - for a bullet list, **bold**, *italic*, [text](https://link).'},
+  {k:'published_at',l:'Publish date',t:'date',h:'Optional. Defaults to today when published.'},{k:'published',l:'Published (visible on the website)',t:'checkbox'}],
+  onSave:function(v){var iso=v.published_at?new Date(v.published_at+'T12:00:00').toISOString():null;
+    var o={title:v.title,slug:slug(v.slug||v.title),excerpt:v.excerpt||null,cover_url:v.cover_url||null,body:v.body,published:v.published,published_at:v.published?(iso||new Date().toISOString()):iso,updated_at:new Date().toISOString(),series:'Digital Edge'};
+    if(!o.slug){toast('Please enter a title.',1);return false}return op(p?db.from('posts').update(o).eq('id',p.id):db.from('posts').insert([o]),'Article saved')},
+  onDelete:p?function(){return op(db.from('posts').delete().eq('id',p.id),'Article deleted')}:null})}
+$('#addpost').onclick=function(){postForm()};
+$('#ptb').onclick=function(e){var b=e.target.closest('[data-p]');if(b)postForm(S.posts.filter(function(p){return p.id===b.dataset.p})[0])};
+/* live updates: new messages and registrations appear without refreshing */
+var liveOn=false;
+function startLive(){if(liveOn||!db.listen)return;liveOn=true;
+  var seen={messages:null,registrations:null};
+  function watch(t,get,set,errKey,label,render){
+    db.listen(t,function(rows,err){
+      if(err){S[errKey]=true;S.errTxt=err.message;set([]);render();renderHome();return}
+      S[errKey]=false;
+      if(seen[t]===null){seen[t]={};rows.forEach(function(x){seen[t][x.id]=1})}
+      else rows.forEach(function(x){if(!seen[t][x.id]){seen[t][x.id]=1;if(x.status==='new')toast('New '+label+' from '+x.first_name+' '+x.last_name+(t==='registrations'?' ('+x.course_name+')':''))}});
+      set(rows);render();renderHome()})}
+  watch('messages',null,function(r){S.messages=r},'msgErr','message',renderMessages);
+  watch('registrations',null,function(r){S.regs=r},'regErr','registration',renderRegs)}
+$('#refresh').onclick=function(){loadAll().then(function(){toast('Updated.')})};
+/* starter content */
+$('#seed').onclick=function(){var SD=window.FRIT_SEED;if(!SD)return;this.disabled=true;
+  db.from('categories').insert(SD.categories.map(function(c){return {slug:c.slug,name:c.name,sort:c.sort}})).then(function(r){
+    if(r.error){toast(r.error.message,1);return}var m={};SD.categories.forEach(function(c,i){m[c.slug]=r.data[i].id});
+    return db.from('courses').insert(SD.courses.map(function(c){return {category_id:m[c.cat],name:c.name,description:c.description,image_url:c.image_url,active:true,sort:c.sort}}))
+  }).then(function(r){if(r&&r.error){toast(r.error.message,1);return}toast('Starter courses loaded.');loadAll()})};
+})();
+</script>
+</body>
+</html>
